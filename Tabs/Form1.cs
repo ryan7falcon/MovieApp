@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Globalization;
 
 namespace Tabs
 {
@@ -36,12 +37,17 @@ namespace Tabs
         }
 
         //add a new record in the end of the file
-        void addrecord(string name, string number)
+        void addrecord(string name, string number,string date, string location, string genre, string rating, int duration, decimal price)
         {
             Movie mov = new Movie();
             mov.name = name;
             mov.number = number;
-
+            mov.date = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            mov.location = location;
+            mov.genre = genre;
+            mov.rating = rating;
+            mov.duration = duration;
+            mov.price = price;
             pos += 1;
             //write a new record to a file
             writeToFile(mov, pos, Movie.Size);
@@ -69,13 +75,21 @@ namespace Tabs
                 get { return mnumber; }
 
             }
+            public DateTime date { set; get; }
+            public string location { set; get; }
+            public string genre { set; get; }
+            public string rating { set; get; }
+            public int duration { set; get; }
+            public decimal price { set; get; }
+
+
 
             public int Position { set; get; }
 
             public static int Size {
                 get
                 {
-                    int size = 2 * 15 + 2 * 20;
+                    int size = 2 * 15 + 2 * 10 + 2 * 12 + 2 * 14 + 2 * 10 + 2 * 2 + 2 * 6 + 2 * 6;
                     return size;
                 }
             }
@@ -105,8 +119,7 @@ namespace Tabs
                 bw = new BinaryWriter(fout);
 
                 fout.Position = pos * size;
-                bw.Write(obj.name);
-                bw.Write(obj.number);
+                writeMovieToFile(bw, obj);
                 //close objects
                 bw.Close();
                 fout.Close();
@@ -117,6 +130,18 @@ namespace Tabs
                 MessageBox.Show("Couldn't write to a file:" + e.Message);
             }
 
+        }
+
+        void writeMovieToFile(BinaryWriter bw, Movie mov)
+        {
+            bw.Write(mov.name);
+            bw.Write(mov.number);
+            bw.Write(mov.date.ToString("yyyy-MM-dd"));
+            bw.Write(mov.location);
+            bw.Write(mov.genre);
+            bw.Write(mov.rating);
+            bw.Write(mov.duration.ToString());
+            bw.Write(mov.price.ToString());
         }
 
         //populate listbox on Select tab with records in the file
@@ -146,8 +171,8 @@ namespace Tabs
 
                     fn.Seek(currentrecord * Movie.Size, 0);
 
-                    mov.name = br.ReadString().ToString();
-                    mov.number = br.ReadString().ToString();
+                    readRecordInfoFromFile(br, mov);
+
                     mov.Position = i;
 
                     lbxSelect.Items.Add(mov);
@@ -175,6 +200,14 @@ namespace Tabs
         {
             mov.name = br.ReadString().ToString();
             mov.number = br.ReadString().ToString();
+            string date = br.ReadString().ToString();
+            mov.date = DateTime.ParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture); 
+            mov.location = br.ReadString().ToString();
+            mov.genre = br.ReadString().ToString();
+            mov.rating = br.ReadString().ToString();
+            string duration = br.ReadString().ToString();
+            mov.duration = Int32.Parse(duration);
+            mov.price = decimal.Parse(br.ReadString().ToString());
         }
 
         //search the map to find movies with names that contain a string name
@@ -197,6 +230,21 @@ namespace Tabs
         {
             tbName.Text = mov.name;
             tbNumber.Text = mov.number;
+            tbDate1.Text = mov.date.ToString("yyyy-MM-dd");
+
+            //check the appropriate radio buttion
+            foreach (RadioButton rb in gbLocation.Controls.OfType<RadioButton>())
+            {
+                if (mov.location == rb.Text)
+                {
+                    rb.Checked = true;
+                }
+            }
+
+            cbxGenre.Text = mov.genre;
+            cbxRating.Text = mov.rating;
+            nDuration.Value = mov.duration;
+            nPrice.Value = mov.price;
         }
 
         //open or create a new database file
@@ -218,8 +266,25 @@ namespace Tabs
             //switch to Select tab        
             tabControl1.SelectedIndex = 2;
 
-            //populate listbox on Select tab and create a map<name, movie>
-            readFromFile();          
+            //try to open a file, if it doesn't exist, create it.
+            FileStream fout;
+            try
+            {
+                //create a file stream object
+                fout = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write);
+                fout.Close();
+
+                //populate listbox on Select tab and create a map<name, movie>
+                readFromFile();
+
+                //clear the search box
+                lbxMovieFound.Items.Clear();
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show("Couldn't open a file:" + ex.Message);
+            }
+                       
 
         }
 
@@ -232,7 +297,10 @@ namespace Tabs
                 if (!map.ContainsKey(tbName.Text))
                 {
                     //if there is no movie with this name, add a new one
-                    addrecord(tbName.Text, tbNumber.Text);
+                    //(string name, string number, string date, string location, string genre, int rating, int duration, float price)
+                    string location = gbLocation.Controls.OfType<RadioButton>()
+                                      .FirstOrDefault(r => r.Checked).Text;
+                    addrecord(tbName.Text, tbNumber.Text, tbDate1.Text, location, cbxGenre.Text, cbxRating.Text, (int)nDuration.Value, nPrice.Value);
 
                     //clear the search 
                     lbxMovieFound.Items.Clear();
@@ -266,6 +334,14 @@ namespace Tabs
         {
             mov.name = tbName.Text;
             mov.number = tbNumber.Text;
+            mov.date = DateTime.ParseExact(tbDate1.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            string location = gbLocation.Controls.OfType<RadioButton>()
+                                      .FirstOrDefault(r => r.Checked).Text;
+            mov.location = location;
+            mov.genre = cbxGenre.Text;
+            mov.rating = cbxRating.Text;
+            mov.duration = (int)nDuration.Value;
+            mov.price = nPrice.Value;
         } 
 
         //reads the info of a movie with a selected name, opens Input tab with that info
@@ -338,8 +414,8 @@ namespace Tabs
                         readRecordInfoFromFile(br, m);
 
                         fout.Position = i * Movie.Size;
-                        bw.Write(m.name);
-                        bw.Write(m.number);           
+                        writeMovieToFile(bw, m);
+         
                     }
 
                     //copy all recoreds after the deleted one
@@ -349,8 +425,7 @@ namespace Tabs
                         fn.Seek(i * Movie.Size, 0);
                         readRecordInfoFromFile(br, m);
                         fout.Position = (i - 1) * Movie.Size;
-                        bw.Write(m.name);
-                        bw.Write(m.number);
+                        writeMovieToFile(bw, m);
                     }
 
                     //close objects

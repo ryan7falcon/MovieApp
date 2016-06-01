@@ -37,18 +37,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tpInput = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gbLocation = new System.Windows.Forms.GroupBox();
             this.rbCanadian = new System.Windows.Forms.RadioButton();
             this.rbInternational = new System.Windows.Forms.RadioButton();
             this.nPrice = new System.Windows.Forms.NumericUpDown();
             this.label9 = new System.Windows.Forms.Label();
             this.nDuration = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbxRating = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.cbxGenre = new System.Windows.Forms.ComboBox();
-            this.tbDate = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tbNumber = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -67,15 +65,18 @@
             this.btnDelete = new System.Windows.Forms.Button();
             this.tbFindMovie = new System.Windows.Forms.TextBox();
             this.btnFind = new System.Windows.Forms.Button();
+            this.tbDate1 = new System.Windows.Forms.DateTimePicker();
+            this.cbxRating = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.tpFile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpInput.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.gbLocation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDuration)).BeginInit();
             this.tpSelect.SuspendLayout();
             this.tpFind.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxRating)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -151,17 +152,17 @@
             // 
             // tpInput
             // 
+            this.tpInput.Controls.Add(this.cbxRating);
+            this.tpInput.Controls.Add(this.tbDate1);
             this.tpInput.Controls.Add(this.label5);
-            this.tpInput.Controls.Add(this.groupBox1);
+            this.tpInput.Controls.Add(this.gbLocation);
             this.tpInput.Controls.Add(this.nPrice);
             this.tpInput.Controls.Add(this.label9);
             this.tpInput.Controls.Add(this.nDuration);
             this.tpInput.Controls.Add(this.label8);
-            this.tpInput.Controls.Add(this.cbxRating);
             this.tpInput.Controls.Add(this.label7);
             this.tpInput.Controls.Add(this.label6);
             this.tpInput.Controls.Add(this.cbxGenre);
-            this.tpInput.Controls.Add(this.tbDate);
             this.tpInput.Controls.Add(this.label4);
             this.tpInput.Controls.Add(this.tbNumber);
             this.tpInput.Controls.Add(this.label3);
@@ -185,17 +186,17 @@
             this.label5.TabIndex = 19;
             this.label5.Text = "Enter Movie Details";
             // 
-            // groupBox1
+            // gbLocation
             // 
-            this.groupBox1.Controls.Add(this.rbCanadian);
-            this.groupBox1.Controls.Add(this.rbInternational);
-            this.groupBox1.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(7, 176);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(289, 65);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Location";
+            this.gbLocation.Controls.Add(this.rbCanadian);
+            this.gbLocation.Controls.Add(this.rbInternational);
+            this.gbLocation.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gbLocation.Location = new System.Drawing.Point(7, 176);
+            this.gbLocation.Name = "gbLocation";
+            this.gbLocation.Size = new System.Drawing.Size(289, 65);
+            this.gbLocation.TabIndex = 18;
+            this.gbLocation.TabStop = false;
+            this.gbLocation.Text = "Location";
             // 
             // rbCanadian
             // 
@@ -225,7 +226,7 @@
             this.nPrice.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nPrice.Location = new System.Drawing.Point(142, 367);
             this.nPrice.Maximum = new decimal(new int[] {
-            1000,
+            500,
             0,
             0,
             0});
@@ -248,7 +249,7 @@
             this.nDuration.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nDuration.Location = new System.Drawing.Point(142, 330);
             this.nDuration.Maximum = new decimal(new int[] {
-            1000,
+            500,
             0,
             0,
             0});
@@ -265,15 +266,6 @@
             this.label8.Size = new System.Drawing.Size(79, 23);
             this.label8.TabIndex = 14;
             this.label8.Text = "Duration";
-            // 
-            // cbxRating
-            // 
-            this.cbxRating.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbxRating.FormattingEnabled = true;
-            this.cbxRating.Location = new System.Drawing.Point(142, 293);
-            this.cbxRating.Name = "cbxRating";
-            this.cbxRating.Size = new System.Drawing.Size(154, 31);
-            this.cbxRating.TabIndex = 13;
             // 
             // label7
             // 
@@ -300,17 +292,10 @@
             this.cbxGenre.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxGenre.FormattingEnabled = true;
             this.cbxGenre.Location = new System.Drawing.Point(142, 256);
+            this.cbxGenre.MaxLength = 10;
             this.cbxGenre.Name = "cbxGenre";
             this.cbxGenre.Size = new System.Drawing.Size(154, 31);
             this.cbxGenre.TabIndex = 10;
-            // 
-            // tbDate
-            // 
-            this.tbDate.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbDate.Location = new System.Drawing.Point(142, 140);
-            this.tbDate.Name = "tbDate";
-            this.tbDate.Size = new System.Drawing.Size(154, 31);
-            this.tbDate.TabIndex = 6;
             // 
             // label4
             // 
@@ -326,6 +311,7 @@
             // 
             this.tbNumber.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbNumber.Location = new System.Drawing.Point(142, 104);
+            this.tbNumber.MaxLength = 10;
             this.tbNumber.Name = "tbNumber";
             this.tbNumber.Size = new System.Drawing.Size(154, 31);
             this.tbNumber.TabIndex = 4;
@@ -354,6 +340,7 @@
             // 
             this.tbName.Font = new System.Drawing.Font("Corbel", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbName.Location = new System.Drawing.Point(142, 67);
+            this.tbName.MaxLength = 15;
             this.tbName.Name = "tbName";
             this.tbName.Size = new System.Drawing.Size(154, 31);
             this.tbName.TabIndex = 1;
@@ -519,6 +506,26 @@
             this.btnFind.UseVisualStyleBackColor = false;
             this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
             // 
+            // tbDate1
+            // 
+            this.tbDate1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.tbDate1.Location = new System.Drawing.Point(142, 143);
+            this.tbDate1.Name = "tbDate1";
+            this.tbDate1.Size = new System.Drawing.Size(148, 31);
+            this.tbDate1.TabIndex = 20;
+            // 
+            // cbxRating
+            // 
+            this.cbxRating.Location = new System.Drawing.Point(142, 293);
+            this.cbxRating.Maximum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.cbxRating.Name = "cbxRating";
+            this.cbxRating.Size = new System.Drawing.Size(155, 31);
+            this.cbxRating.TabIndex = 21;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -533,14 +540,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tpInput.ResumeLayout(false);
             this.tpInput.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gbLocation.ResumeLayout(false);
+            this.gbLocation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nDuration)).EndInit();
             this.tpSelect.ResumeLayout(false);
             this.tpSelect.PerformLayout();
             this.tpFind.ResumeLayout(false);
             this.tpFind.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbxRating)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -568,23 +576,23 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.NumericUpDown nDuration;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox cbxRating;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cbxGenre;
         private System.Windows.Forms.RadioButton rbInternational;
         private System.Windows.Forms.RadioButton rbCanadian;
-        private System.Windows.Forms.TextBox tbDate;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox tbNumber;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.ListBox lbxMovieFound;
         private System.Windows.Forms.Label lbMovieFound;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox gbLocation;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.DateTimePicker tbDate1;
+        private System.Windows.Forms.NumericUpDown cbxRating;
     }
 }
 
